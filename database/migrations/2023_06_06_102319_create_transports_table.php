@@ -16,8 +16,8 @@ class CreateTransportsTable extends Migration
         Schema::create('transports', function (Blueprint $table) {
             $table->id();
             $table->integer('trip_id')->nullable();
-            $table->foreign('trip_id')->references('id')
-            ->on('trips')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('trip_id')->references('id')
+            // ->on('trips')->onDelete('cascade')->onUpdate('cascade');
             $table->string('type');
             $table->string('number');
             $table->timestamps();
