@@ -27,9 +27,9 @@ class CreateUsersTable extends Migration
             $table->double('long')->nullable();
             $table->longText('descrption')->nullable();
             $table->string('license')->nullable();
-            $table->integer('category_id')->nullable();
-            $table->foreign('category_id')->references('id')
-            ->on('categories')->onDelete('cascade')->onUpdate('cascade');
+             $table->integer('category_id')->nullable();
+            // $table->foreign('category_id')->references('id')
+            // ->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
