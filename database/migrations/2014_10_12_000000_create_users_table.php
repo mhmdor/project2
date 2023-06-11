@@ -17,15 +17,15 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique()->nullable();
-            $table->integer('mobile')->unique();
+            $table->string('mobile')->unique();
             $table->integer('valid')->default(0);
             $table->integer('role');
-            $table->integer('lName')->nullable();
+            $table->string('lName')->nullable();
             $table->date('birth')->nullable();
             $table->string('gender')->nullable();
             $table->double('lat')->nullable();
             $table->double('long')->nullable();
-            $table->longText('descrption')->nullable();
+            $table->longText('description')->nullable();
             $table->string('license')->nullable();
              $table->integer('category_id')->nullable();
             // $table->foreign('category_id')->references('id')
