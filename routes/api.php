@@ -17,4 +17,31 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/owner/login', [AuthController::class, 'ownerLogin']);
+
+Route::group(['middleware' => ['auth:sanctum','isTourism']], function () {
+
+ 
+   
+});
+
+Route::group(['middleware' => ['auth:sanctum','IsClient']], function () {
+
+ 
+ 
+
+});
+
+Route::group(['middleware' => ['auth:sanctum','IsFacility']], function () {
+
+ 
+   
+
+});
+
+Route::group(['middleware' => ['auth:owners']], function () {
+
+   
+   
+});
 

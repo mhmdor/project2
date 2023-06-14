@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -16,14 +17,12 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'first_name' => $this->name,
-            'last_name' => $this->lastName,
             'mobile' => $this->mobile,
             'role' => $this->role,
             'email' => $this->email,
-            'gender' => $this->gender,
-            'birth' => $this->birth,
             'valid' => $this->valid,
+            'profile' => profile::where('user_id',$this->id)->first(),
+
         ];
     }
 }

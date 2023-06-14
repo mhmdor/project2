@@ -18,9 +18,9 @@ class CreateBidsTable extends Migration
             $table->string('title');
             $table->string('descrption');
             $table->string('image');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')
-            ->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('facility_id');
+            $table->foreign('facility_id')->references('id')
+            ->on('facilities')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('price');
             $table->timestamps();
         });

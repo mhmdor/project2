@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Facility extends Model
+class profile extends Model
 {
-    protected $guarded = [];
     use HasFactory;
+    protected $guarded = [];
 
     protected $hidden = [
         'id',
