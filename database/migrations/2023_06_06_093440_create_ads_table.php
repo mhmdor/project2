@@ -18,9 +18,9 @@ class CreateAdsTable extends Migration
             $table->string('title');
             $table->string('descrption');
             $table->string('image');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')
-            ->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('tourism_id');
+            $table->foreign('tourism_id')->references('id')
+            ->on('tourisms')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

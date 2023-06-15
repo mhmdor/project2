@@ -19,10 +19,14 @@ class CreateTripsTable extends Migration
             $table->string('description');
             $table->integer('price');
             $table->date('date');
+            $table->double('beginLat');
+            $table->double('beginLong');
+            $table->double('endLat');
+            $table->double('endLong');
             $table->integer('status');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')
-            ->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('tourism_id');
+            $table->foreign('tourism_id')->references('id')
+            ->on('tourisms')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\TOURISM;
 
+use App\Models\Ads;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,13 +32,15 @@ class TripController extends ApiController
         if ($validator instanceof Response) return $validator;
         $trip = Trip::create([
             'title' => $request->title,
-            'description' => $request->description,
+            'description' => $request->descrption,
             'price' => $request->price,
             'status' => $request->status,
             'date' => $request->date,
             'user_id' => Auth::id()
         ]);
 
-        //return $this->apiResponse(['tourism' => new TourismResource($trip)],, 'add trip successfully');
+        return $this->apiResponse(['tourism' => new TourismResource($trip)],200, 'add trip successfully');
     }
+
+
 }
