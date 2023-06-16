@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\TOURISM;
-
+namespace App\Http\Controllers\Api\FACILITY;
 use App\Http\Controllers\Api\ApiController;
 use App\Models\Ads;
 use App\Models\bid;
@@ -16,7 +15,7 @@ use App\Http\Resources\TourismResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class bidController extends ApiController
+class BidController extends ApiController
 {
     public function create_bid(Request $request){
 
@@ -49,6 +48,9 @@ class bidController extends ApiController
             'facility_id' => $facility_id
         ]);
         return response()->json( $bid );
+//        return $this->apiResponse(['facility' =>
+//            new TourismResource($bid)],
+//            200, 'add bid successfully');
     }
 
     public function edit_bid(Request $request,$id){
@@ -57,33 +59,31 @@ class bidController extends ApiController
             'title' => 'required|string|max:50',
             'descrption' => 'required|string|max:222',
             'price' => 'required|int',
-            'image' => 'required',
+            //'image' => 'required',
         ]);
 
-        $bid = bid::findOrFail($id);
+        $bidF = bid::findOrFail($id);
 
         if($validator instanceof Response) return $validator;
 
-        $image = $request->file('image');
-        $destinationPathImg = public_path('uploads/BID/');
-        if (!$image->move($destinationPathImg, $image->getClientOriginalName())) {
-            return 'Error saving the file.';
-        }
+//        $image = $request->file('image');
+//        $destinationPathImg = public_path('uploads/BID/');
+//        if (!$image->move($destinationPathImg, $image->getClientOriginalName())) {
+//            return 'Error saving the file.';
+//        }
         $id = Auth::id();
         $get = Facility::query()->where('user_id','=',$id)->get('id');
         $data = json_decode(  $get, true);
         $id = $data[0]['id'];
         $facility_id = intval($id);
 
-        $bid = bid::update([
+        $bidF -> update([
             'title' => $request->title,
             'descrption' => $request->descrption,
             'price' => $request->price,
-            'image' => $image->getClientOriginalName(),
-            'facility_id' => $facility_id
+            // 'image' => $image->getClientOriginalName(),
         ]);
-
-        return response()->json( $bid );
+        return response()->json($bidF);
     }
 
     public function remove_bids($id)

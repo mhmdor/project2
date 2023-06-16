@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\TOURISM;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Models\Ads;
-use App\Models\bid;
 use App\Models\tourism;
 use App\Models\User;
 use App\Traits\RestfulTrait;
@@ -46,6 +45,36 @@ class adeController extends ApiController
         ]);
         return response()->json($ads);
     }
+   public  function test(){
+        echo "hre";
+   }
+    public function edit_ade(Request $request,$id){
+
+        $validator = $this -> apiValidation($request , [
+            'title' => 'required|string|max:50',
+            'descrption' => 'required|string|max:222',
+            //'image' => 'required',
+        ]);
+
+        $ade = Ads::findOrFail($id);
+
+        if($validator instanceof Response) return $validator;
+
+//        $image = $request->file('image');
+//        $destinationPathImg = public_path('uploads/BID/');
+//        if (!$image->move($destinationPathImg, $image->getClientOriginalName())) {
+//            return 'Error saving the file.';
+//        }
+
+
+        $ade -> update([
+            'title' => $request->title,
+            'descrption' => $request->descrption,
+            // 'image' => $image->getClientOriginalName(),
+        ]);
+        return response()->json($ade);
+    }
+
 
     public function remove_ade($id)
     {
