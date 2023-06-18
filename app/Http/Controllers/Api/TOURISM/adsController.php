@@ -5,18 +5,13 @@ namespace App\Http\Controllers\Api\TOURISM;
 use App\Http\Controllers\Api\ApiController;
 use App\Models\Ads;
 use App\Models\tourism;
-use App\Models\User;
-use App\Traits\RestfulTrait;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\TourismResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
-class adeController extends ApiController
+class adsController extends ApiController
 {
-    public function create_Ade(Request $request){
+    public function createAds(Request $request){
 
         $validator = $this -> apiValidation($request , [
             'title' => 'required|string|max:50',
@@ -32,10 +27,8 @@ class adeController extends ApiController
             return 'Error saving the file.';
         }
         $id = Auth::id();
-        $get = tourism::where('user_id','=',$id)->get('id');
-        $data = json_decode(  $get, true);
-        $id = $data[0]['id'];
-        $tourism_id = intval($id);
+        $tourism_id = tourism::where('user_id','=',$id)->first()->id;
+       
 
         $ads = Ads::create([
             'title' => $request->title,
@@ -43,12 +36,23 @@ class adeController extends ApiController
             'tourism_id' => $tourism_id,
             'image' => $image->getClientOriginalName(),
         ]);
-        return response()->json($ads);
+      return   $this->apiResponse(['ads' => $ads], self::STATUS_CREATED, 'add ads successfully');
     }
-   public  function test(){
-        echo "hre";
-   }
-    public function edit_ade(Request $request,$id){
+
+    public function getAds()
+    {
+        $id = Auth::id();
+        $tourism_id = tourism::where('user_id','=',$id)->first()->id;
+        $adsCount = Ads::where('tourism_id',$tourism_id)->count();
+        if ($adsCount > 0) {
+            $ads = Ads::where('tourism_id',$tourism_id)->get();
+            return   $this->apiResponse(['ads' => $ads], self::STATUS_CREATED, 'get ads successfully');
+        } else {
+            return $this->apiResponse(['Error' => "Not Found"], 404, 'No Data');
+        }
+    }
+  
+    public function editAds(Request $request,$id){
 
         $validator = $this -> apiValidation($request , [
             'title' => 'required|string|max:50',
@@ -56,40 +60,27 @@ class adeController extends ApiController
             //'image' => 'required',
         ]);
 
-        $ade = Ads::findOrFail($id);
+        $ads = Ads::findOrFail($id);
 
         if($validator instanceof Response) return $validator;
 
-//        $image = $request->file('image');
-//        $destinationPathImg = public_path('uploads/BID/');
-//        if (!$image->move($destinationPathImg, $image->getClientOriginalName())) {
-//            return 'Error saving the file.';
-//        }
 
 
-        $ade -> update([
+
+        $ads -> update([
             'title' => $request->title,
             'descrption' => $request->descrption,
             // 'image' => $image->getClientOriginalName(),
         ]);
-        return response()->json($ade);
+        return   $this->apiResponse(['ads' => $ads], self::STATUS_CREATED, 'Update ads successfully');
     }
 
 
-    public function remove_ade($id)
+    public function removeAds($id)
     {
-        $ade = Ads::findOrFail($id);
-        $ade->delete();
+        $ads = Ads::findOrFail($id);
+        $ads->delete();
         return "deleted successfully";
     }
-    public function get_ads()
-    {
-        $adsCount = Ads::count();
-        if ($adsCount > 0) {
-            $ads = Ads::get();
-            return $ads;
-        } else {
-            return 'No ads found';
-        }
-    }
+    
 }
