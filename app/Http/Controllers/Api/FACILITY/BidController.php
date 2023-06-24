@@ -33,12 +33,9 @@ class BidController extends ApiController
         if (!$image->move($destinationPathImg, $image->getClientOriginalName())) {
             return 'Error saving the file.';
         }
-        $id = Auth::id();
-        $get = Facility::query()->where('user_id','=',$id)->get('id');
-        $data = json_decode(  $get, true);
-        $id = $data[0]['id'];
-        $facility_id = intval($id);
 
+        $id = Auth::id();
+        $facility_id  = Facility::where('user_id','=',$id)->first()->id;
 
         $bid = bid::create([
             'title' => $request->title,
@@ -47,10 +44,21 @@ class BidController extends ApiController
             'image' => $image->getClientOriginalName(),
             'facility_id' => $facility_id
         ]);
-        return response()->json( $bid );
-//        return $this->apiResponse(['facility' =>
-//            new TourismResource($bid)],
-//            200, 'add bid successfully');
+
+        return $this->apiResponse(['bid' => $bid ],self::STATUS_CREATED,'add bid successfully');
+    }
+
+    public function get_bids()
+    {
+        $id = Auth::id();
+        $facility_id = Facility::where('user_id','=',$id)->first()->id;
+        $bidsCount = bid::where('facility_id',$facility_id)->count();
+        if ($bidsCount > 0) {
+            $bids = bid::where('facility_id',$facility_id)->get();
+            return $this->apiResponse(['bids' => $bids],self::STATUS_CREATED,"bids got get successfully");
+        } else {
+            return $this->apiResponse(['Error' => "Not Found"], 404, 'No Data');
+        }
     }
 
     public function edit_bid(Request $request,$id){
@@ -61,46 +69,24 @@ class BidController extends ApiController
             'price' => 'required|int',
             //'image' => 'required',
         ]);
-
-        $bidF = bid::findOrFail($id);
-
+        $bid = bid::findOrFail($id);
         if($validator instanceof Response) return $validator;
 
-//        $image = $request->file('image');
-//        $destinationPathImg = public_path('uploads/BID/');
-//        if (!$image->move($destinationPathImg, $image->getClientOriginalName())) {
-//            return 'Error saving the file.';
-//        }
-        $id = Auth::id();
-        $get = Facility::query()->where('user_id','=',$id)->get('id');
-        $data = json_decode(  $get, true);
-        $id = $data[0]['id'];
-        $facility_id = intval($id);
-
-        $bidF -> update([
+        $bid -> update([
             'title' => $request->title,
             'descrption' => $request->descrption,
             'price' => $request->price,
             // 'image' => $image->getClientOriginalName(),
         ]);
-        return response()->json($bidF);
+        return   $this->apiResponse(['bid' => $bid], self::STATUS_CREATED, 'Update bids successfully');
     }
 
     public function remove_bids($id)
     {
-        $b = bid::findOrFail($id);
-        $b->delete();
+        $bid = bid::findOrFail($id);
+        $bid -> delete();
         return "deleted successfully";
     }
 
-    public function get_bids()
-    {
-        $bidsCount = bid::count();
-        if ($bidsCount > 0) {
-            $bids = bid::get();
-            return $bids;
-        } else {
-            return  'No bids found';
-        }
-    }
+
 }

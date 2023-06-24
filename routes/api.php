@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum','isTourism']], function () {
 Route::group(['middleware' => ['auth:sanctum','IsClient']], function () {
 });
 
+############## FACILITY ROUTES ******************
 Route::group(['middleware' => ['auth:sanctum','IsFacility']], function () {
 
     Route::post('createBid',[BidController::class,'create_bid']);

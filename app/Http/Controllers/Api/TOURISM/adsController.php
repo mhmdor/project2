@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\TOURISM;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Models\Ads;
+use App\Models\Facility;
 use App\Models\tourism;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -28,15 +29,13 @@ class adsController extends ApiController
         }
         $id = Auth::id();
         $tourism_id = tourism::where('user_id','=',$id)->first()->id;
-       
-
         $ads = Ads::create([
             'title' => $request->title,
             'descrption' => $request->descrption,
             'tourism_id' => $tourism_id,
             'image' => $image->getClientOriginalName(),
         ]);
-      return   $this->apiResponse(['ads' => $ads], self::STATUS_CREATED, 'add ads successfully');
+      return $this->apiResponse(['ads' => $ads],self::STATUS_CREATED, 'add ads successfully');
     }
 
     public function getAds()
@@ -51,7 +50,7 @@ class adsController extends ApiController
             return $this->apiResponse(['Error' => "Not Found"], 404, 'No Data');
         }
     }
-  
+
     public function editAds(Request $request,$id){
 
         $validator = $this -> apiValidation($request , [
@@ -59,13 +58,9 @@ class adsController extends ApiController
             'descrption' => 'required|string|max:222',
             //'image' => 'required',
         ]);
-
         $ads = Ads::findOrFail($id);
 
         if($validator instanceof Response) return $validator;
-
-
-
 
         $ads -> update([
             'title' => $request->title,
@@ -75,12 +70,11 @@ class adsController extends ApiController
         return   $this->apiResponse(['ads' => $ads], self::STATUS_CREATED, 'Update ads successfully');
     }
 
-
     public function removeAds($id)
     {
         $ads = Ads::findOrFail($id);
         $ads->delete();
         return "deleted successfully";
     }
-    
+
 }
