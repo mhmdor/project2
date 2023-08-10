@@ -39,7 +39,7 @@ class TripController extends ApiController
             'user_id' => Auth::id()
         ]);
 
-        return $this->apiResponse(['tourism' => new TourismResource($trip)],200, 'add trip successfully');
+        return $this->apiResponse(['trip' => $trip],200, 'add trip successfully');
     }
 
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 
 use App\Http\Controllers\Api\FACILITY\BidController;
+use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\TOURISM\adsController;
 use App\Http\Controllers\Api\TOURISM\TripController;
 use Illuminate\Http\Request;
@@ -22,17 +23,24 @@ Route::group(['middleware' => ['auth:sanctum','isTourism']], function () {
 
     ###Ads
 
-    Route::post('createAds',[adsController::class,'createAds']);
+    Route::post('createAde',[adsController::class,'createAds']);
 
-    Route::get('getAds',[adsController::class,'getAds']);
+    Route::get('get_ads',[adsController::class,'getAds']);
 
-    Route::put('editAds/{id}',[adsController::class,'editAds']);
+    Route::put('edit-ade/{id}',[adsController::class,'editAds']);
 
-    Route::delete('removeAds/{id}',[adsController::class,'removeAds']);
+    Route::delete('remove_ade/{id}',[adsController::class,'removeAds']);
 
 });
 
 Route::group(['middleware' => ['auth:sanctum','IsClient']], function () {
+
+    Route::post('create_reserve',[ReservationController::class,'createReserve']);
+    Route::get('get_reserves',[ReservationController::class,'getreserves']);
+    Route::put('edit_reserve/{id}',[ReservationController::class,'edit_reserve']);
+    Route::delete('delete_reserve/{id}',[ReservationController::class,'remove_reserve']);
+
+
 });
 
 ############## FACILITY ROUTES ******************

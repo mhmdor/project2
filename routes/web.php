@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\ReservationController;
+use App\Models\reservation;
+use App\Models\transport_reservation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 
 Route::get('/', function () {
     return view('welcome');

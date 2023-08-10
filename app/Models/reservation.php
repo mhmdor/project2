@@ -9,4 +9,7 @@ class reservation extends Model
 {
     protected $guarded = [];
     use HasFactory;
+    public function transport(){
+        return $this->belongsToMany(transport::class);
+    }
 }
