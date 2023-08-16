@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 
 use App\Http\Controllers\Api\FACILITY\BidController;
+use App\Http\Controllers\Api\FollowController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\TOURISM\adsController;
 use App\Http\Controllers\Api\TOURISM\TripController;
@@ -39,6 +40,9 @@ Route::group(['middleware' => ['auth:sanctum','IsClient']], function () {
     Route::get('get_reserves',[ReservationController::class,'getreserves']);
     Route::put('edit_reserve/{id}',[ReservationController::class,'edit_reserve']);
     Route::delete('delete_reserve/{id}',[ReservationController::class,'remove_reserve']);
+    Route::post('follow/{id}',[FollowController::class,'follow']);
+    Route::delete('UNfollow/{id}',[FollowController::class,'UnFollow']);
+    Route::get('get_specific_followers/{id}',[FollowController::class,'get_followers']);
 
 
 });
