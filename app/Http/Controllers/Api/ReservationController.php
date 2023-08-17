@@ -70,7 +70,7 @@ class ReservationController extends ApiController
             'total_price' => $request->total_price,
 
         ]);
-        return   $this->apiResponse(['ads' => $reserve], self::STATUS_CREATED, 'Update ads successfully');
+        return  $this->apiResponse(['reserve' => $reserve], self::STATUS_CREATED, 'Update ads successfully');
     }
 
 

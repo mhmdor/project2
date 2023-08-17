@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 
 use App\Http\Controllers\Api\FACILITY\BidController;
 use App\Http\Controllers\Api\FollowController;
+use App\Http\Controllers\Api\OWNER\CategoryController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\TOURISM\adsController;
 use App\Http\Controllers\Api\TOURISM\TripController;
@@ -13,12 +14,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/owner_login', [AuthController::class, 'ownerLogin']);
 
-// Route::post('createTrip', [TripController::class, 'createTrip']);
-
-
-
-Route::post('/owner/login', [AuthController::class, 'ownerLogin']);
 
 Route::group(['middleware' => ['auth:sanctum','isTourism']], function () {
 
@@ -59,7 +56,11 @@ Route::group(['middleware' => ['auth:sanctum','IsFacility']], function () {
 
 Route::group(['middleware' => ['auth:owners']], function () {
 
-
+    Route::post('create_category',[CategoryController::class,'createCategory']);
+    Route::get('get_category/{id}',[CategoryController::class,'getCategory']);
+    Route::get('get_ALL_category',[CategoryController::class,'GetAllCategory']);
+    Route::delete('remove_category/{id}',[CategoryController::class,'removeCategory']);
+    Route::put('edit_category/{id}',[CategoryController::class,'EditCategory']);
 
 });
 
